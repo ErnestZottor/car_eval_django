@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+import django_heroku
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,7 +27,9 @@ SECRET_KEY = 'django-insecure-7#$k^h(q6q!woemz#q$@r$%9ie*obr-7&2b$1ev1p9=0o01de4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['carevaluationapp.herokuapp.com']
+# LOWED_HOSTS = ['carevaluationapp.herokuapp.com']
+ALLOWED_HOSTS = []
+
 
 
 # Application definition
@@ -130,3 +133,6 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LOGIN_REDIRECT_URL = 'home'
 LOGIN_URL = 'login'
+
+# Activate Django-Heroku.
+django_heroku.settings(locals())

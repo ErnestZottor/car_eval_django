@@ -39,7 +39,7 @@ SAFETY = (
     ('0', 'low')
 )
 
-class BreastCancerChecker(models.Model):
+class CarEvaluation(models.Model):
     buying = models.CharField(max_length=20, choices=BUYING, default='low')
     maint = models.CharField(max_length = 20, choices=MAINT, default='low')
     doors = models.CharField(max_length=20, choices=DOORS, default='2')
@@ -47,13 +47,13 @@ class BreastCancerChecker(models.Model):
     lug_boot = models.CharField(max_length=20, choices=LUG_BOOT, default='small')
     safety = models.CharField(max_length=20, choices=SAFETY, default='low')
     predictions = models.CharField(max_length=100, blank=True)
-    # date = models.DateTimeField(default=now)
+    date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.buying
+        return self.predictions
 
     class Meta:
         pass
-        # ordering = ['-date']
+        ordering = ['-date']
 
    

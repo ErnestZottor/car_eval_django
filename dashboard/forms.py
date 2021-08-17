@@ -3,11 +3,11 @@ from django.forms import ModelForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
-from . models import BreastCancerChecker
+from . models import CarEvaluation
 # """mean_radius 	mean_texture 	mean_perimeter 	mean_area 	mean_smoothness  date"""
-class BreastCheckerForm(ModelForm):
+class CarEvaluationForm(ModelForm):
     class Meta:
-        model = BreastCancerChecker
+        model = CarEvaluation
         # fields = "__all__"
         fields = ['buying', 'maint', 'doors', 'persons', 'lug_boot', 'safety']
 

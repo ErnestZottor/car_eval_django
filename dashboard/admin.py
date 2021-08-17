@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import BreastCancerChecker
+from .models import CarEvaluation
 
-@admin.register(BreastCancerChecker)
+@admin.register(CarEvaluation)
 class HomeAdmin(admin.ModelAdmin):
     list_display = ('buying', 'doors', 'persons', 'lug_boot', 'safety', 'predictions')
 

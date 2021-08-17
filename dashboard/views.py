@@ -2,17 +2,16 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm
-from django.http import HttpResponse
 from django.contrib import messages
-from . models import BreastCancerChecker
-from . forms import BreastCheckerForm
+from . models import CarEvaluation
+from . forms import CarEvaluationForm
 from django.contrib.auth.models import User
 import joblib
 import pandas as pd
 import os
 
 CURRENT_DIR = os.path.dirname(__file__)
-model_file = os.path.join(CURRENT_DIR, 'model/rf_model.pkl')
+model_file = os.path.join(CURRENT_DIR, 'model/rf_classifier.pkl')
 svm = joblib.load(model_file)
 
 
@@ -60,12 +59,11 @@ SAFETY = {
 
 def site(request):
     
-    form = BreastCheckerForm()
+    form = CarEvaluationForm()
     if request.method == "POST":
-        form = BreastCheckerForm(request.POST)
+        form = CarEvaluationForm(request.POST)
         if form.is_valid():
-        # name = request.POST.get('name')
-        # surname = request.POST.get('surname')
+       
             buying = int(form.cleaned_data.get('buying'))
             maint = int(form.cleaned_data.get('maint'))
             doors = int(form.cleaned_data.get('doors'))
@@ -85,20 +83,20 @@ def site(request):
 
         
             checker = svm.predict(data)[0]
-            if (checker == 1):
-                checker = 'Good'
-                messages.success(request, 'Good')
-            if (checker == 2):
-                checker = 'Very Good'
-                messages.success(request, 'Very Good')
-
-            if (checker == 3 or checker==4):
-                checker = 'Acceptable'
-                messages.warning(request, checker)
-
             if (checker == 0):
                 checker = 'Unacceptable'
-                messages.warning(request, 'Not Acceptable')
+                messages.warning(request, checker)
+            elif (checker == 1):
+                checker = 'Acceptable'
+                messages.success(request, checker)
+
+            elif (checker == 2):
+                checker = 'Good'
+                messages.warning(request, checker)
+
+            else:
+                checker = 'Very Good'
+                messages.warning(request, checker)
             # if form.is_valid():
             if not request.user.is_authenticated:
                 return redirect('login')
@@ -107,7 +105,7 @@ def site(request):
             obj.predictions = checker
             obj.save()
     else:
-        form = BreastCheckerForm()
+        form = CarEvaluationForm()
 
     context = {"form":form}
 
@@ -115,7 +113,7 @@ def site(request):
 
 @login_required
 def predictions(request):
-    car_info = BreastCancerChecker.objects.all()
+    car_info = CarEvaluation.objects.all()
     context = {
         'car_info': car_info
     }
@@ -128,7 +126,6 @@ def register(request):
         form = UserRegisterForm(request.POST)
         if form.is_valid():
             form.save()
-            username = form.cleaned_data.get('username')
             messages.success(request, f'Your account has been created! You are now able to log in')
             return redirect('home')
     else:
